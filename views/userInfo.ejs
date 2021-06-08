@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+
+<%- include('./partials/header.ejs') %>
+    <!-- Google Platform Library that integrates Google Sign-In. -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <!-- Specify client id -->
+    <meta name="google-signin-client_id" content=<%=process.env.GCLOUD_CLIENT_ID %>>
+    <style>
+    /*Wrap text*/
+        .list-group-item {
+            word-break: break-all;
+        }
+    </style>
+    <title>User Info</title>
+    </head>
+
+
+    <body>
+        <%- include('./partials/navbar.ejs', {title: 'User Info' , active: 'User Info' }) %>
+            <script>
+                async function signOut() {
+                    const auth2 = gapi.auth2.getAuthInstance();
+                    try {
+                        await auth2.signOut();
+                        console.log('User signed out.');
+                    }
+                    catch (e) {
+                        throw e;
+                    }
+                }
+            </script>
+
+            <div class="text-center">
+                <img src="<%= picture %>" class="rounded" alt="">
+            </div>
+            <ul class="list-group">
+                <li class="list-group-item">user id: <%= googleId %>
+                </li>
+                <li class="list-group-item">given name: <%= givenName %>
+                </li>
+                <li class="list-group-item">family name: <%= familyName %>
+                </li>
+                <li class="list-group-item">email: <%= email %>
+                </li>
+                <li class="list-group-item">id token: <%= googleIdJWT %>
+                </li>
+            </ul>
+
+    </body>
+
+</html>

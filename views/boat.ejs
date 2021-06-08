@@ -1,0 +1,23 @@
+<%- include('./partials/header.ejs') %>
+<title>Boats</title>
+</head>
+
+    <body>
+        <%- include('./partials/navbar.ejs', {title: 'Boats', active: 'Boats'}) %>
+        <ul id='boat'>
+            <li id='id'>
+                id: <%= id %>
+            </li>
+            <li id='name'>
+                name: <%= name %>
+            </li>
+            <li id='type'>
+                type: <%= type %>
+            </li>
+            <li id='length'>
+                length: <%= length %>
+            </li>
+        </ul>
+    </body>
+
+</html>
