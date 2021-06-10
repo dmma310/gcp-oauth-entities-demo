@@ -2,7 +2,7 @@
 
 1. Create new API credentials
 2. Add Authorized Javascript origins to enable JS on front-end > used for sign in
-  - <https://gcp-project-demo-314305.wn.r.appspot.com>
+  - <https://gcp-demo-dex.wn.r.appspot.com>
 3. Add authorized redirect URLs for server to handle > After sign in, redirect to server with POST and id_token
   - /login
 4. Add OAuth consent screen > make public

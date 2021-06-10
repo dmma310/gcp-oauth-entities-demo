@@ -1,23 +1,40 @@
 <%- include('./partials/header.ejs') %>
-<title>Boats</title>
-</head>
+    <title>Boats</title>
+    </head>
 
     <body>
-        <%- include('./partials/navbar.ejs', {title: 'Boats', active: 'Boats'}) %>
-        <ul id='boat'>
-            <li id='id'>
-                id: <%= id %>
-            </li>
-            <li id='name'>
-                name: <%= name %>
-            </li>
-            <li id='type'>
-                type: <%= type %>
-            </li>
-            <li id='length'>
-                length: <%= length %>
-            </li>
-        </ul>
+        <%- include('./partials/navbar.ejs', {title: 'Boat' , active: 'Boat' }) %>
+            <table class="table table-striped table-hover table-sm">
+                <caption>List of boats</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Length</th>
+                        <th scope="col">Owner</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <%= id %>
+                        </td>
+                        <td>
+                            <%= name %>
+                        </td>
+                        <td>
+                            <%= type %>
+                        </td>
+                        <td>
+                            <%= length %>
+                        </td>
+                        <td>
+                            <%= owner %>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
     </body>
 
-</html>
+    </html>

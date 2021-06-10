@@ -3,12 +3,12 @@ runtime: nodejs14
 # Create project and enable Cloud Build API.
 # deploy via:
 # - gcloud auth login # credentials in ~/.config/gcloud/
-# - gcloud config set project gcp-project-demo-314305
+# - gcloud config set project gcp-demo-dex
 # - gcloud app deploy app.yaml
 # - gcloud app browse
-# - public url is now https://gcp-project-demo-314305.wn.r.appspot.com
+# - public url is now https://gcp-demo-dex.wn.r.appspot.com
 # - get current project gcloud config get-value project
-# - gcloud projects delete gcp-project-demo-314305
+# - gcloud projects delete gcp-demo-dex
 # - gcloud projects add-iam-policy-binding hw1-made --member=user:my-user@example.com --role=roles/viewer
 
 # Cloud Firestore in Datastore mode
@@ -37,14 +37,14 @@ runtime: nodejs14
 # *** NOTE: Use Credential file to access Datastore on VM ***
 # - Create service account: https://cloud.google.com/docs/authentication/getting-started
 # - On account: Keys > Add Key > Create new key > JSON [FILE_NAME.json]
-#   - gcp-project-demo-314305-54cb07a31b94.json
+#   - gcp-demo-dex-54cb07a31b94.json
 # Place JSON file in same directory as other docker image files [DIR]
 #   - .
 # Set environment variable in Dockerfile: ENV GOOGLE_APPLICATION_CREDENTIALS='[DIR]/[FILE_NAME.json]'
-#   - ENV GOOGLE_APPLICATION_CREDENTIALS='./gcp-project-demo-314305-54cb07a31b94'
+#   - ENV GOOGLE_APPLICATION_CREDENTIALS='./gcp-demo-dex-54cb07a31b94'
 # Deploy to Google Container Registries
 # - gcloud builds submit --tag gcr.io/[PROJECT_ID]/[IMAGE_TAG]
-#   - gcloud builds submit --tag gcr.io/gcp-project-demo-314305/gcp-project-demo
+#   - gcloud builds submit --tag gcr.io/gcp-demo-dex/gcp-project-demo
 # - Access container via VM in Google Compute Engine (or can also use Kubernetes) or push/pull https://cloud.google.com/container-registry/docs/pushing-and-pulling
 # - Get full repository name [URL] in Tools > Container Registry
 # - Create VM with Container Image as [URL]

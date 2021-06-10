@@ -1,7 +1,7 @@
 const express = require('express');
 const { USER } = require('../lib/constants');
 const { fromDatastore, getFilteredEntities } = require('../lib/datastore');
-const { authenticatedBearerJWT } = require('../lib/googleOAuth');
+const { authenticatedBearerJWT, authenticated } = require('../lib/googleOAuth');
 const { isValidJsonSyntax, isValidBoatName, isValidBoatLength, isValidBoatType,
     isValidBoatPostBody, isValidGetAcceptHeader, isJsonAcceptHeader, isValidContentTypeHeader,
     isValidBoatPatchBody} = require('../lib/validators');
@@ -11,15 +11,15 @@ const BOAT = require('../models/boats');
 const LOAD = require('../models/loads');
 const { getUserByGoogleCreds } = require('../models/users');
 
-// router.get('/', isJsonAcceptHeader, authenticated, async (req, res) => {
-router.get('/', isJsonAcceptHeader, authenticatedBearerJWT, async (req, res) => {
+router.get('/', isJsonAcceptHeader, authenticated, async (req, res) => {
     try {
         // TODO: Instead of setting session-token in browser, set Authorization Bearer so we can use one authenticated function
         // Get user ID from authenticated JWT
-        let boat = await getUserByGoogleCreds(req, req.googleId);
+        let boat = await getUserByGoogleCreds(req, req.user.googleId);
         boat = fromDatastore(boat.items[0]);
         const boats = await BOAT.getFilteredBoats(req, 'owner', boat.id);
-        return res.status(200).json(boats);
+        return res.render('boats', boats);
+        // return res.status(200).json(boats);
     }
     catch (e) {
         console.log(e);
@@ -28,11 +28,13 @@ router.get('/', isJsonAcceptHeader, authenticatedBearerJWT, async (req, res) => 
 });
 
 // View a boat
-router.get('/:id', isValidGetAcceptHeader, authenticatedBearerJWT, (req, res) => {
+router.get('/:id', isValidGetAcceptHeader, authenticated, (req, res) => {
+// router.get('/:id', isValidGetAcceptHeader, authenticatedBearerJWT, (req, res) => {
     // Get user ID from validated JWT and boat, compare id to owner
     Promise.all(
         [
-            getFilteredEntities(req, USER, 'googleId', req.googleId),
+            getFilteredEntities(req, USER, 'googleId', req.user.googleId),
+            // getFilteredEntities(req, USER, 'googleId', req.googleId),
             BOAT.getBoat(req.params.id)
         ]
     ).then(vals => {
@@ -47,7 +49,6 @@ router.get('/:id', isValidGetAcceptHeader, authenticatedBearerJWT, (req, res) =>
                 return res.status(200).json(boatObj);
             } else if (accepts === 'text/html') {
                 res.set(('Content-Type', 'text/html'));
-                console.log(boatObj);
                 return res.status(200).render('boat', boatObj);
             } else { return res.status(500).send('Content-Type got messed up!'); }
         }
@@ -79,9 +80,9 @@ router.get('/:id/loads', isJsonAcceptHeader, authenticatedBearerJWT, async (req,
 // (i.e., the last page of results shouldn't have the 'next' link).
 // Authenticate JWT, find user with that JWT, return userId
 router.post('/', isValidJsonSyntax, isValidContentTypeHeader, isValidBoatName,
-    isJsonAcceptHeader, isValidBoatPostBody, isValidBoatLength, isValidBoatType, authenticatedBearerJWT,
+    isJsonAcceptHeader, isValidBoatPostBody, isValidBoatLength, isValidBoatType, authenticated,
     async (req, res) => {
-        console.log('test');
+        console.log(req.body);
         try {
             const val = await getFilteredEntities(req, USER, 'googleId', req.googleId);
             req.body.owner = val.items[0].id;

@@ -4,9 +4,9 @@
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <!-- Specify client id -->
     <meta name="google-signin-client_id" content=<%=process.env.GCLOUD_CLIENT_ID %>>
-    <link rel="stylesheet" href="/css/style.css">
-<title>Login</title>
-</head>
+    <link rel="stylesheet" href="/css/login_style.css">
+    <title>Login</title>
+    </head>
 
 
     <body>
@@ -77,11 +77,17 @@
                 height="72"> -->
                 <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
                 <label for="inputEmail" class="sr-only">Email address</label>
-                <input disabled="disabled" type="email" id="inputEmail" class="form-control" placeholder="Email address"
-                    required autofocus>
-                <label for="inputPassword" class="sr-only">Password</label>
-                <input disabled="disabled" type="password" id="inputPassword" class="form-control"
-                    placeholder="Password" required>
+                <div class="input-container">
+                    <i class="fa fa-envelope icon"></i>
+                    <input disabled="disabled" type="email" id="inputEmail" class="form-control"
+                        placeholder="Email address" required autofocus>
+                </div>
+                <div class="input-container">
+                    <i class="fa fa-key icon"></i>
+                    <label for="inputPassword" class="sr-only">Password</label>
+                    <input disabled="disabled" type="password" id="inputPassword" class="form-control"
+                        placeholder="Password" required>
+                </div>
                 <div class="checkbox mb-3">
                     <label>
                         <input type="checkbox" value="remember-me" id="flexCheckCheckedDisabled" disabled> Remember me
