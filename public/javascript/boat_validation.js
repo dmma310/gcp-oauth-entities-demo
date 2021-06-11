@@ -15,7 +15,7 @@
             event.stopPropagation(); // Prevent propogating/bubbling up event
           }
   
-          form.classList.add('was-validated')
+          form.classList.add('was-validated');
         }, false)
       })
   })()

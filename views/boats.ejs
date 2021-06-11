@@ -110,23 +110,23 @@
                             <div class="modal-body mx-3">
                                 <div class="md-form mb-3">
                                     <label data-error="wrong" data-success="right" for="boatName">Name</label>
-                                    <input type="text" id="boatName" class="form-control validate"
-                                        pattern="^[a-zA-Z0-9 ]+$" required>
+                                    <input type="text" id="boatName" name="name" class="form-control validate"
+                                        pattern="^[a-zA-Z0-9 ]{2,25}$" required>
                                     <div class="invalid-feedback">Unique Name Required. Numbers, characters, spaces
                                         only.</div>
                                 </div>
 
                                 <div class="md-form mb-3">
                                     <label data-error="wrong" data-success="right" for="boatType">Type</label>
-                                    <input type="text" id="boatType" class="form-control validate"
-                                        pattern="^[a-zA-Z0-9 ]+$" required>
+                                    <input type="text" id="boatType" name="type" class="form-control validate"
+                                        pattern="^[a-zA-Z0-9 ]{2,25}$" required>
                                     <div class="invalid-feedback">Type Required. Numbers, characters, spaces only.</div>
                                 </div>
 
                                 <div class="md-form mb-3">
                                     <label data-error="wrong" data-success="right" for="boatLength">Length</label>
-                                    <input type="number" id="boatLength" class="form-control validate"
-                                        pattern="^[a-zA-Z0-9 ]+$" required>
+                                    <input type="number" id="boatLength" name="length" class="form-control validate"
+                                        min="0" max="1000" required>
                                     <div class="invalid-feedback">Number Required.</div>
                                 </div>
 
@@ -142,40 +142,44 @@
     </body>
     <script type="text/javascript" src="/javascript/boat_validation.js"></script>
     <script>
-        const myForm = document.getElementById("boats_Add_Form");
-        const route = myForm.id.split("_")[0];
-
-        // submit handler
-
-        myForm.addEventListener('submit', (e) => {
-            // on form submission, prevent default
-            e.preventDefault();
-
-            // construct a FormData object, which fires the formdata event
-            new FormData(myForm);
+        document.addEventListener('DOMContentLoaded', () => {
+            document
+                .getElementById('boats_Add_Form')
+                .addEventListener('submit', handleForm);
         });
 
-        // formdata handler to retrieve data
+        async function handleForm(ev) {
+            ev.preventDefault(); //stop the page reloading
+            let myForm = ev.target;
+            let fd = new FormData(myForm);
 
-        myForm.addEventListener('formdata', event => {
-            // Get the form data from the event object
-            let data = event.formData;
-            console.log(data);
-            console.log(event);
-            for (var value of data.values()) {
-                console.log(value);
-            }
+            const route = myForm.id.split("_")[0];
+            let json = await convertFDToJSON(fd);
 
-            // submit the data via XHR
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", `/{route}`);
+            let xhr = new XMLHttpRequest();
+
+            xhr.open('POST', `/${route}`);
             xhr.setRequestHeader('Content-Type', 'application/json');
+            // Process response from server
             xhr.onload = function () {
-                // location.assign(`/${route}`);
-                console.log(xhr.responseText);
+                // If response from server is 'success', sign out (on the client side) so that all persistence is handled by the server
+                if (xhr.status === 201) {
+                    location.reload();
+                }
+                else {
+                    console.log(`Error ${xhr.status}: ${xhr.statusText}: ${xhr.responseText}`); // TODO: Not safe
+                }
             };
-            // xhr.send(data);
-        });
+            xhr.send(json);
+        }
+
+        function convertFDToJSON(formData) {
+            let obj = {};
+            for (let key of formData.keys()) {
+                obj[key] = formData.get(key);
+            }
+            return JSON.stringify(obj);
+        }
     </script>
 
     </html>

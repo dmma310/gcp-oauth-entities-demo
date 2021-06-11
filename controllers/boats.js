@@ -82,9 +82,8 @@ router.get('/:id/loads', isJsonAcceptHeader, authenticatedBearerJWT, async (req,
 router.post('/', isValidJsonSyntax, isValidContentTypeHeader, isValidBoatName,
     isJsonAcceptHeader, isValidBoatPostBody, isValidBoatLength, isValidBoatType, authenticated,
     async (req, res) => {
-        console.log(req.body);
         try {
-            const val = await getFilteredEntities(req, USER, 'googleId', req.googleId);
+            const val = await getFilteredEntities(req, USER, 'googleId', req.user.googleId);
             req.body.owner = val.items[0].id;
             // req.body.owner = fromDatastore(val[0]).id;
             // Get user ID associated with valid JWT, set owner field
