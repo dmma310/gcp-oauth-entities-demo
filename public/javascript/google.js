@@ -23,7 +23,7 @@ function onSignIn(googleUser) {
     xhr.open('POST', '/login');
     xhr.setRequestHeader('Content-Type', 'application/json');
     // Process response from server
-    xhr.onload = function () {
+    xhr.onload = _ => {
         console.log('Signed in as: ' + xhr.responseText);
         // If response from server is 'success', sign out (on the client side) so that all persistence is handled by the server
         if (xhr.responseText == 'success') {

@@ -4,7 +4,7 @@ const { fromDatastore, getFilteredEntities } = require('../lib/datastore');
 const { authenticatedBearerJWT, authenticated } = require('../lib/googleOAuth');
 const { isValidJsonSyntax, isValidBoatName, isValidBoatLength, isValidBoatType,
     isValidBoatPostBody, isValidGetAcceptHeader, isJsonAcceptHeader, isValidContentTypeHeader,
-    isValidBoatPatchBody} = require('../lib/validators');
+    isValidBoatPatchBody } = require('../lib/validators');
 const router = express.Router();
 
 const BOAT = require('../models/boats');
@@ -29,7 +29,7 @@ router.get('/', isJsonAcceptHeader, authenticated, async (req, res) => {
 
 // View a boat
 router.get('/:id', isValidGetAcceptHeader, authenticated, (req, res) => {
-// router.get('/:id', isValidGetAcceptHeader, authenticatedBearerJWT, (req, res) => {
+    // router.get('/:id', isValidGetAcceptHeader, authenticatedBearerJWT, (req, res) => {
     // Get user ID from validated JWT and boat, compare id to owner
     Promise.all(
         [
@@ -64,10 +64,14 @@ router.get('/:id', isValidGetAcceptHeader, authenticated, (req, res) => {
 
 // View all loads for a given boat.
 // This doesn't require pagination.
-router.get('/:id/loads', isJsonAcceptHeader, authenticatedBearerJWT, async (req, res) => {
+router.get('/:id/loads', isJsonAcceptHeader, authenticated, async (req, res) => {
     try {
         const loads = await BOAT.getBoatLoads(req.params.id);
-        return res.status(200).json(loads == null ? [] : loads);
+        console.log(loads);
+        return res.status(200).render('loads', {
+            items: loads == null ? [] : loads
+        });
+        // return res.status(200).json(loads == null ? [] : loads);
     }
     catch (e) {
         console.log(e);
@@ -158,7 +162,7 @@ router.delete('/:boat_id/loads/:load_id', authenticatedBearerJWT, (req, res) => 
 });
 
 // Delete a boat and unload any loads that were loaded on to it.
-router.delete('/:id', authenticatedBearerJWT, async (req, res) => {
+router.delete('/:id', authenticated, async (req, res) => {
     try {
         const loads = await BOAT.getBoatLoads(req.params.id);
         await BOAT.deleteBoat(req.params.id);
@@ -178,7 +182,7 @@ router.delete('/:id', authenticatedBearerJWT, async (req, res) => {
 // TODO: Allow modifying loads and owner
 router.put('/:id', isValidJsonSyntax, isValidContentTypeHeader,
     isValidBoatName, isValidBoatPostBody, isValidBoatLength, isValidBoatType,
-    authenticatedBearerJWT, (req, res) => {
+    authenticated, (req, res) => {
         // Get owner and current boat concurrently
         return Promise.all([
             getFilteredEntities(req, USER, 'googleId', req.googleId),

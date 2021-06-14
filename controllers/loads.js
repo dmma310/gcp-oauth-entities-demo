@@ -12,7 +12,8 @@ const { isValidGetAcceptHeader, isValidJsonSyntax, isValidContentTypeHeader,
 router.get('/', isJsonAcceptHeader, async (req, res) => {
     try {
         const loads = await LOAD.getLoads(req);
-        return res.status(200).json(loads);
+        return res.render('loads', loads);
+        // return res.status(200).json(loads);
     }
     catch (e) {
         console.log(e);

@@ -19,15 +19,15 @@
                             <th scope="col">Name</th>
                             <th scope="col">Type</th>
                             <th scope="col">Length</th>
-                            <!-- <th scope="col">Owner</th> -->
-                            <th scope="col">Edit</th>
-                            <th scope="col">Loads</th>
                             <th scope="col">Details</th>
+                            <!-- <th scope="col">Owner</th> -->
+                            <th scope="col">Boat</th>
+                            <th scope="col">Loads</th>
                             <th scope="col">Delete</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <% items.forEach(function(boat, idx) { %>
+                        <% items.forEach(boat=> { %>
                             <tr>
                                 <!-- <td>
                                     <%= boat.id %>
@@ -41,58 +41,128 @@
                                 <td>
                                     <%= boat.length %>
                                 </td>
+                                <td>
+                                    <a class="btn btn-info" href="/boats/<%= boat.id %>" role="button">Details <i
+                                            class="fa fa-info-circle"></i></a>
+                                </td>
                                 <!-- <td>
                                     <%= boat.owner %>
                                 </td> -->
-                                <td>
-                                    <a class="btn btn-info" href="#" role="button">Edit</a>
-                                </td>
-                                <!-- TODO: Wrap in form, make put/patch request -->
-                                <% if (boat.loads !=null) { %>
-                                    <a class="btn btn-info" href="/boats/<%= boat.id %>/loads" role="button">Details</a>
-                                    <% } else { %>
-                                        <td>None</td>
-                                        <% } %>
-                                            <td>
-                                                <a class="btn btn-info" href="/boats/<%= boat.id %>"
-                                                    role="button">Details</a>
-                                            </td>
 
-                                            <!-- TODO: Pop up confirmation, then delete request -->
-                                            <td>
-                                                <a class="btn btn-danger" href="" data-toggle="modal"
-                                                    data-target="#deleteBoat<%= boat.id %>" role="button">Delete</a>
-                                            </td>
-                                            <!-- Pop-up for deleting boat -->
-                                            <div class="modal fade" id="deleteBoat<%= items[idx].id %>” tabindex=" -1"
-                                                role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header text-center">
-                                                            <h4 class="modal-title w-100 font-weight-bold">Delete</h4>
-                                                            <button type="button" class="close" data-dismiss="modal"
-                                                                aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <form action="/boats/<%= boat.id %>" method="DELETE"
-                                                            class="needs-validation" novalidate>
-                                                            <div class="modal-footer d-flex justify-content-center">
-                                                                <button class="btn btn-indigo" type="submit">Delete <i
-                                                                        class="fa fa-plus ml-1"></i></button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
+                                <!-- Edit Boat -->
+                                <td>
+                                    <div>
+                                        <a href="" class="btn btn-info btn-rounded mb-4" data-toggle="modal"
+                                            data-target="#editBoatModal<%= boat.id %>" id="editBoatButton">Edit <i
+                                                class="fa fa-edit"></i></a>
+                                    </div>
+                                </td>
+
+                                <!-- Pop-up for editing boat -->
+                                <div class="modal fade editBoatModal" id="editBoatModal<%= boat.id %>" tabindex="-1"
+                                    role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header text-center">
+                                                <h4 class="modal-title w-100 font-weight-bold">Delete
+                                                </h4>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
                                             </div>
+                                            <form id="boats_put_form" class="needs-validation" novalidate>
+                                                <div class="modal-body mx-3">
+                                                    <div class="md-form mb-3">
+                                                        <label data-error="wrong" data-success="right"
+                                                            for="boatName">Name</label>
+                                                        <input type="text" id="boatName" name="name"
+                                                            class="form-control validate" pattern="^[a-zA-Z0-9 ]{2,25}$"
+                                                            value="<%= boat.name %>" required>
+                                                        <div class="invalid-feedback">Unique Name Required. Numbers,
+                                                            characters, spaces
+                                                            only.</div>
+                                                    </div>
+
+                                                    <div class="md-form mb-3">
+                                                        <label data-error="wrong" data-success="right" for="boatType"
+                                                            value="<%= boat.type %>">Type</label>
+                                                        <input type="text" id="boatType" name="type"
+                                                            class="form-control validate" pattern="^[a-zA-Z0-9 ]{2,25}$"
+                                                            value="<%= boat.type %>" required>
+                                                        <div class="invalid-feedback">Type Required. Numbers,
+                                                            characters, spaces only.</div>
+                                                    </div>
+
+                                                    <div class="md-form mb-3">
+                                                        <label data-error="wrong" data-success="right"
+                                                            for="boatLength">Length</label>
+                                                        <input type="number" id="boatLength" name="length"
+                                                            class="form-control validate" min="0" max="1000"
+                                                            value="<%= boat.length %>" required>
+                                                        <div class="invalid-feedback">Number Required.</div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="modal-footer d-flex justify-content-center">
+                                                    <button class="btn btn-indigo" type="submit">Submit <i
+                                                            class="fa fa-plus ml-1"></i></button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!-- Edit Boat Loads-->
+                                <td>
+                                    <a class="btn btn-info disabled" href="/boats/<%= boat.id %>" role="button">Edit <i
+                                            class="fa fa-edit"></i></a>
+                                </td>
+
+                                <td>
+                                    <!-- Delete Boat -->
+                                    <div>
+                                        <a href="" class="btn btn-danger btn-rounded mb-4" data-toggle="modal"
+                                            data-target="#deleteBoatModal<%= boat.id %>" id="deleteBoatButton">Delete <i
+                                                class="fa fa-trash ml-1"></i></a>
+                                    </div>
+                                    <!-- Pop-up for deleting boat -->
+                                    <div class="modal fade deleteBoatModal" id="deleteBoatModal<%= boat.id %>"
+                                        tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header text-center">
+                                                    <h4 class="modal-title w-100 font-weight-bold">Delete
+                                                    </h4>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body mx-3 text-center">
+                                                    Are you sure?
+                                                </div>
+                                                <form id="boats_delete_form" name="boats_delete_form"
+                                                    class="needs-validation" novalidate>
+                                                    <div class="modal-footer d-flex justify-content-center">
+                                                        <button class="btn btn-danger" type="submit">Delete
+                                                            <i class="fa fa-trash ml-1"></i></button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                             <% }); %>
                     </tbody>
                 </table>
             </div>
             <div class="text-center">
-                <a href="" class="btn btn-primary btn-rounded mb-4" data-toggle="modal" data-target="#addBoatModal">Add
-                    Boat</a>
+                <a href="" class="btn btn-primary btn-rounded mb-4" data-toggle="modal" data-target="#addBoatModal"
+                    id="saveBoatButton">Add
+                    Boat <i class="fa fa-plus ml-1"></i></a>
             </div>
 
             <!-- Pop-up for adding boat -->
@@ -106,12 +176,12 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <form id="boats_Add_Form" class="needs-validation" novalidate>
+                        <form id="boats_post_form" class="needs-validation" novalidate>
                             <div class="modal-body mx-3">
                                 <div class="md-form mb-3">
                                     <label data-error="wrong" data-success="right" for="boatName">Name</label>
                                     <input type="text" id="boatName" name="name" class="form-control validate"
-                                        pattern="^[a-zA-Z0-9 ]{2,25}$" required>
+                                        pattern="^[a-zA-Z0-9 ]{2,25}$" value="" required>
                                     <div class="invalid-feedback">Unique Name Required. Numbers, characters, spaces
                                         only.</div>
                                 </div>
@@ -141,45 +211,35 @@
             </div>
     </body>
     <script type="text/javascript" src="/javascript/boat_validation.js"></script>
+    <script type="text/javascript" src="/javascript/handle_form.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Listen for adding boat
             document
-                .getElementById('boats_Add_Form')
-                .addEventListener('submit', handleForm);
-        });
+                .getElementById('boats_post_form')
+                // TODO: Handle save.
+                .addEventListener('submit', (ev) => {
+                    handleSaveForm(ev, 201)
+                }); // From handle_form
 
-        async function handleForm(ev) {
-            ev.preventDefault(); //stop the page reloading
-            let myForm = ev.target;
-            let fd = new FormData(myForm);
-
-            const route = myForm.id.split("_")[0];
-            let json = await convertFDToJSON(fd);
-
-            let xhr = new XMLHttpRequest();
-
-            xhr.open('POST', `/${route}`);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            // Process response from server
-            xhr.onload = function () {
-                // If response from server is 'success', sign out (on the client side) so that all persistence is handled by the server
-                if (xhr.status === 201) {
-                    location.reload();
-                }
-                else {
-                    console.log(`Error ${xhr.status}: ${xhr.statusText}: ${xhr.responseText}`); // TODO: Not safe
-                }
-            };
-            xhr.send(json);
-        }
-
-        function convertFDToJSON(formData) {
-            let obj = {};
-            for (let key of formData.keys()) {
-                obj[key] = formData.get(key);
+            // Listen for editing boat
+            const editBoats = document.getElementsByClassName("modal fade editBoatModal");
+            for (let i = 0; i < editBoats.length; ++i) {
+                document.getElementById(editBoats[i].id).addEventListener('submit', (ev) => {
+                    handleSaveForm(ev, 204, editBoats[i].id.match(/\d+/)[0])
+                });
             }
-            return JSON.stringify(obj);
-        }
+
+            // Listen for deleting boat
+            const deleteBoats = document.getElementsByClassName("modal fade deleteBoatModal");
+            for (let i = 0; i < deleteBoats.length; ++i) {
+                document.getElementById(deleteBoats[i].id).addEventListener('submit',
+                    ev => {
+                        handleDeleteForm(ev, deleteBoats[i].id.match(/\d+/)[0]);
+                    }
+                );
+            }
+        });
     </script>
 
     </html>

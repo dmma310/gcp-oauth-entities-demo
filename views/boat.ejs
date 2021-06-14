@@ -13,6 +13,7 @@
                         <th scope="col">Type</th>
                         <th scope="col">Length</th>
                         <th scope="col">Owner</th>
+                        <th scope="col">Loads</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -31,6 +32,10 @@
                         </td>
                         <td>
                             <%= owner %>
+                        </td>
+                        <td>
+                            <a class="btn btn-info" href="/boats/<%= id %>/loads" role="button">Details <i
+                                    class="fa fa-info-circle"></i></a>
                         </td>
                     </tr>
                 </tbody>
