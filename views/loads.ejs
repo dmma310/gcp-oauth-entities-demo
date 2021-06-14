@@ -20,6 +20,8 @@
                             <th scope="col">Content</th>
                             <th scope="col">Carrier</th>
                             <th scope="col">Created</th>
+                            <th scope="col">Edit</th>
+                            <th scope="col">Delete</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -36,7 +38,7 @@
                                         <a href="" class="btn btn-primary btn-rounded mb-4" data-toggle="modal"
                                             data-target="#LoadCarrierModal<%= load.id %>" id="saveLoadButton">Details
                                             <i class="fa fa-info-circle ml-1"></i></a>
-                                        <!-- Pop-up for boat carrier details -->
+                                        <!-- Pop-up for load carrier details -->
                                         <div class="modal fade loadCarrierModal" id="LoadCarrierModal<%= load.id %>"
                                             tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
                                             aria-hidden="true">
@@ -65,6 +67,95 @@
                                     <td>
                                         <%= load.creationDate %>
                                     </td>
+                                    <!-- Edit Load -->
+                                    <td>
+                                        <div>
+                                            <a href="" class="btn btn-info btn-rounded mb-4" data-toggle="modal"
+                                                data-target="#editLoadModal<%= load.id %>" id="editloadButton">Edit <i
+                                                    class="fa fa-edit"></i></a>
+                                        </div>
+                                    </td>
+
+                                    <!-- Pop-up for editing load -->
+                                    <div class="modal fade editLoadModal" id="editLoadModal<%= load.id %>" tabindex="-1"
+                                        role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header text-center">
+                                                    <h4 class="modal-title w-100 font-weight-bold">Delete
+                                                    </h4>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <form id="loads_put_form" class="needs-validation" novalidate>
+                                                    <form id="loads_put_form" class="needs-validation" novalidate>
+                                                        <div class="modal-body mx-3">
+                                                            <div class="md-form mb-3">
+                                                                <label data-error="wrong" data-success="right"
+                                                                    for="loadVolume">Volume</label>
+                                                                <input type="text" id="loadVolume" name="volume"
+                                                                    class="form-control validate" min="0" max="1000"
+                                                                    value="<%= load.volume %>" required>
+                                                            </div>
+
+                                                            <div class="md-form mb-3">
+                                                                <label data-error="wrong" data-success="right"
+                                                                    for="loadContent">Content</label>
+                                                                <input type="text" id="loadContent" name="content"
+                                                                    class="form-control validate"
+                                                                    pattern="^[a-zA-Z0-9 ]{2,25}$"
+                                                                    value="<%= load.content %>" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer d-flex justify-content-center">
+                                                            <button class="btn btn-indigo" type="submit">Add <i
+                                                                    class="fa fa-plus ml-1"></i></button>
+                                                        </div>
+                                                    </form>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <td>
+                                        <!-- Delete Load -->
+                                        <div>
+                                            <a href="" class="btn btn-danger btn-rounded mb-4" data-toggle="modal"
+                                                data-target="#deleteLoadModal<%= load.id %>"
+                                                id="deleteLoadButton">Delete <i class="fa fa-trash ml-1"></i></a>
+                                        </div>
+                                        <!-- Pop-up for deleting load -->
+                                        <div class="modal fade deleteLoadModal" id="deleteLoadModal<%= load.id %>"
+                                            tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                                            aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header text-center">
+                                                        <h4 class="modal-title w-100 font-weight-bold">Delete
+                                                        </h4>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body mx-3 text-center">
+                                                        Are you sure?
+                                                    </div>
+                                                    <form id="loads_delete_form" name="loads_delete_form"
+                                                        class="needs-validation" novalidate>
+                                                        <div class="modal-footer d-flex justify-content-center">
+                                                            <button class="btn btn-danger" type="submit">Delete
+                                                                <i class="fa fa-trash ml-1"></i></button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+
+
                                 </tr>
                                 <% }); %>
                                     <% }; %>
@@ -121,6 +212,24 @@
                 .addEventListener('submit', (ev) => {
                     handleSaveForm(ev, 201);
                 }); // From handle_form
+
+            // Listen for editing load
+            const editLoads = document.getElementsByClassName("modal fade editLoadModal");
+            for (let i = 0; i < editLoads.length; ++i) {
+                document.getElementById(editLoads[i].id).addEventListener('submit', (ev) => {
+                    handleSaveForm(ev, 204, editLoads[i].id.match(/\d+/)[0])
+                });
+            }
+
+            // Listen for deleting load
+            const deleteLoads = document.getElementsByClassName("modal fade deleteLoadModal");
+            for (let i = 0; i < deleteLoads.length; ++i) {
+                document.getElementById(deleteLoads[i].id).addEventListener('submit',
+                    ev => {
+                        handleDeleteForm(ev, deleteLoads[i].id.match(/\d+/)[0]);
+                    }
+                );
+            }
         });
 
     </script>

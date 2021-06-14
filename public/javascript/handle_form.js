@@ -28,11 +28,10 @@ async function handleSaveForm(ev, successCode, id = null) {
 }
 
 
-function handleDeleteForm(ev, id) {
+function handleDeleteForm(ev, id=null) {
     ev.preventDefault(); //stop the page reloading
-
     // Form id must be named route_method_somethingElse (i.e. boats_post_form)
-    let [route, method, ...rest] = myForm.id.split("_");
+    let [route, ...rest] = ev.target.id.split("_");
 
     if (id !== null) {
         route += `/${id}`;
@@ -51,7 +50,7 @@ function handleDeleteForm(ev, id) {
             console.log(`Error ${xhr.status}: ${xhr.statusText}: ${xhr.responseText}`); // TODO: Not safe
         }
     };
-    xhr.send(json);
+    xhr.send();
 }
 
 
