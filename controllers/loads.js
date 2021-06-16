@@ -67,7 +67,8 @@ router.post('/', isValidJsonSyntax, isValidContentTypeHeader,
     });
 
 // Add carrier to load, update boat with new load
-router.patch('/:load_id/boats/:boat_id', async (req, res) => {
+// TODO: Should be PATCH, but PATCH doesn't work with XmlHttpRequest with Chrome
+router.put('/:load_id/boats/:boat_id', async (req, res) => {
     try {
         // Get existing load
         let load = await LOAD.getLoad(req.params.load_id);
@@ -120,7 +121,7 @@ router.delete('/:id', async (req, res) => {
 });
 
 
-// TODO: PUT AND PATCH LOADS
+// Put
 router.put('/:id', isValidJsonSyntax, isValidContentTypeHeader,
     isValidLoadPostBody, (req, res) => {
         LOAD.getLoad(req.params.id).then(load => {
@@ -140,6 +141,7 @@ router.put('/:id', isValidJsonSyntax, isValidContentTypeHeader,
         });
     });
 
+// Patch
 router.patch('/:id', isValidJsonSyntax, isValidLoadPatchBody, (req, res) => {
     LOAD.getLoad(req.params.id).then(load => {
         req.body.volume = req.body.volume || load[0].volume;

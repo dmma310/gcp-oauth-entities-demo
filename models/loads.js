@@ -6,7 +6,7 @@ module.exports.getLoads = async req => {
 }
 
 
-module.exports.getLoad = id => {
+module.exports.getLoad = async id => {
     return getEntity(LOAD, id);
 }
 

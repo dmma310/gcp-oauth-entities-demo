@@ -13,7 +13,7 @@ router.post('/', async (req, res) => {
   try {
     const payload = await verify(req.body.token);
     res.cookie('session-token', req.body.token, {
-      maxAge: 600000, // 10 minutes in ms
+      maxAge: 18000000, // 30 minutes in ms
       httpOnly: true, // http only, prevents JavaScript cookie access
       secure: true // cookie must be sent over https / ssl
     }); // Set token sent from client (see onSignIn)
