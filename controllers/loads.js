@@ -102,17 +102,26 @@ router.delete('/:id', async (req, res) => {
     try {
         const load = await LOAD.getLoad(req.params.id);
         const carrierId = load[0]['carrier']['id'];
-        Promise.all([
-            BOAT.deleteLoadOnBoat(carrierId, req.params.id),
-            LOAD.deleteLoad(req.params.id)
-        ]).then(vals => {
-            const boatKey = vals[0];
+        if (carrierId == undefined) {
+            const boatKey = await LOAD.deleteLoad(req.params.id);
             // Catches undefined and null values
             if (boatKey == null) {
                 throw 'No load with this load_id exists.';
             }
             return res.sendStatus(204);
-        });
+        } else {
+            Promise.all([
+                BOAT.deleteLoadOnBoat(carrierId, req.params.id),
+                LOAD.deleteLoad(req.params.id)
+            ]).then(vals => {
+                const boatKey = vals[0];
+                // Catches undefined and null values
+                if (boatKey == null) {
+                    throw 'No load with this load_id exists.';
+                }
+                return res.sendStatus(204);
+            }).catch(e => { throw e });
+        }
     }
     catch (e) {
         console.log(e);

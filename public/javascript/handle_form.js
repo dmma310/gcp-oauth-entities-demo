@@ -16,7 +16,6 @@ async function handleSaveForm(ev, successCode, id = null) {
     xhr.setRequestHeader('Content-Type', 'application/json');
     // Process response from server
     xhr.onload = _ => {
-
         // If response from server is 'success', sign out (on the client side) so that all persistence is handled by the server
         if (xhr.status === successCode) {
             location.reload();
@@ -50,14 +49,15 @@ function handleEditLoadCarrierForm(ev, successCode, loadId) {
     xhr.send();
 }
 
-function handleDeleteForm(ev, id=null) {
+function handleDeleteForm(ev, id = null) {
+    ev.preventDefault();
     // Form id must be named route_method_somethingElse (i.e. boats_post_form)
-    let [route, ...rest] = ev.target.id.split("_");
+        let [route, ...rest] = ev.target.id.split("_");
 
     if (id !== null) {
         route += `/${id}`;
     }
-    
+
     let xhr = new XMLHttpRequest();
 
     xhr.open('delete', `/${route}`);
