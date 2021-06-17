@@ -67,11 +67,9 @@ router.get('/:id', isValidGetAcceptHeader, authenticated, (req, res) => {
 router.get('/:id/loads', isJsonAcceptHeader, authenticated, async (req, res) => {
     try {
         const loads = await BOAT.getBoatLoads(req.params.id);
-        console.log(loads);
         return res.status(200).render('loads', {
             items: loads == null ? [] : loads
         });
-        // return res.status(200).json(loads == null ? [] : loads);
     }
     catch (e) {
         console.log(e);

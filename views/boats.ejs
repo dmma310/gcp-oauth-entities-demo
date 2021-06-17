@@ -15,11 +15,10 @@
                 <table class="table table-striped table-hover mx-auto w-auto">
                     <thead>
                         <tr>
-                            <!-- <th scope="col">Id</th> -->
+                            <th scope="col">Id</th>
                             <th scope="col">Name</th>
                             <th scope="col">Type</th>
                             <th scope="col">Length</th>
-                            <th scope="col">Details</th>
                             <!-- <th scope="col">Owner</th> -->
                             <th scope="col">Boat</th>
                             <th scope="col">Loads</th>
@@ -29,9 +28,9 @@
                     <tbody>
                         <% items.forEach(boat=> { %>
                             <tr>
-                                <!-- <td>
+                                <td>
                                     <%= boat.id %>
-                                </td> -->
+                                </td>
                                 <td>
                                     <%= boat.name %>
                                 </td>
@@ -40,10 +39,6 @@
                                 </td>
                                 <td>
                                     <%= boat.length %>
-                                </td>
-                                <td>
-                                    <a class="btn btn-info" href="/boats/<%= boat.id %>" role="button">Details <i
-                                            class="fa fa-info-circle"></i></a>
                                 </td>
                                 <!-- <td>
                                     <%= boat.owner %>
@@ -114,14 +109,14 @@
                                 </div>
 
 
-                                <!-- Edit Boat Loads-->
+                                <!-- Boat Loads-->
                                 <td>
-                                    <a class="btn btn-info disabled" href="/boats/<%= boat.id %>" role="button">Edit <i
-                                            class="fa fa-edit"></i></a>
+                                    <a class="btn btn-info" href="/boats/<%= boat.id %>/loads" role="button">Details <i
+                                            class="fa fa-info-circle"></i></a>
                                 </td>
 
+                                <!-- Delete Boat -->
                                 <td>
-                                    <!-- Delete Boat -->
                                     <div>
                                         <a href="" class="btn btn-danger btn-rounded mb-4" data-toggle="modal"
                                             data-target="#deleteBoatModal<%= boat.id %>" id="deleteBoatButton">Delete <i
