@@ -155,10 +155,10 @@
                                                                             for="loadContent">Boat ID</label>
                                                                         <input type="text" id="loadCarrierContent"
                                                                             name="boat_id" class="form-control validate"
-                                                                            min="10" max="30"
-                                                                            <% if (load.carrier.id) { %>
-                                                                                disabled
-                                                                            <% } %>
+                                                                            min="10" max="30" <% if (load.carrier.id) {
+                                                                            %>
+                                                                        disabled
+                                                                        <% } %>
                                                                             value="<%= load.carrier.id %>" required>
                                                                     </div>
                                                                 </div>
@@ -174,22 +174,30 @@
                                                                     </div>
                                                                     <!-- Delete carrier in load -->
                                                                     <div class="modal-footer">
-                                                                        <a href=""
-                                                                        <% if (load.carrier.id) { %>
+                                                                        <!-- <a href="" <% if (load.carrier.id) { %>
                                                                             class="btn btn-danger btn-rounded mb-4"
                                                                             data-toggle="modal"
                                                                             data-dismiss="modal"
                                                                             data-toggle="modal"
-                                                                            data-target="#delete_loads_<%= load.id %>
-                                                                                _boats_<%= load.carrier.id %>"
+                                                                            data-target="#delete_boats\/<%=
+                                                                                load.carrier.id %>\/loads\/<%= load.id
+                                                                                    %>"
                                                                                     id="deleteLoadCarrierButton"
-                                                                        <%} else {%>
-                                                                            class="btn btn-danger
-                                                                            btn-rounded mb-4
-                                                                            disabled"
-                                                                        <%}%>
-                                                                        >Delete<i class="fa fa-trash ml-1"></i>
-                                                                        </a>
+                                                                                    <%} else {%>
+                                                                                        class="btn btn-danger
+                                                                                        btn-rounded mb-4
+                                                                                        disabled"
+                                                                                        <%}%> > Delete
+                                                                        </a> -->
+                                                                        <button class="btn btn-danger
+                                                                        <% if (!load.carrier.id) { %>
+                                                                            disabled
+                                                                        <% } %>
+                                                                        data-toggle=" modal" data-dismiss="modal"
+                                                                            data-toggle="modal" data-target="#delete_boats\/<%=
+                                                                            load.carrier.id %>\/loads\/<%= load.id
+                                                                                %>" type=" submit">Delete
+                                                                        </button>
                                                                     </div>
                                                                 </div>
                                                             </form>
@@ -203,7 +211,7 @@
             </td>
 
             <!-- Pop-up for deleting carrier on load (inside another modal)-->
-            <div class="modal fade deleteLoadCarrierModal" id="delete_loads_<%= load.id %>_boats_<%= load.carrier.id %>"
+            <div class="modal fade deleteLoadCarrierModal" id="delete_boats/<%= load.carrier.id %>/loads/<%= load.id %>"
                 tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -326,7 +334,7 @@
             const editLoadCarrier = document.getElementsByClassName("modal fade editLoadCarrierModal");
             for (let i = 0; i < editLoadCarrier.length; ++i) {
                 document.getElementById(editLoadCarrier[i].id).addEventListener('submit', ev => {
-                    handleEditLoadCarrierForm(ev, 204, editLoadCarrier[i].id.match(/\d+/)[0], 'put');
+                    handleAddLoadCarrierForm(ev, 204, editLoadCarrier[i].id.match(/\d+/)[0], 'put');
                 });
             }
 
@@ -359,8 +367,10 @@
             for (let i = 0; i < deleteCarrierLoads.length; ++i) {
                 document.getElementById(deleteCarrierLoads[i].id).addEventListener('submit',
                     ev => {
+                        const method = deleteCarrierLoads[i].id.substr(0, deleteCarrierLoads[i].id.indexOf('_'));
+                        const route = deleteCarrierLoads[i].id.substr(method.length + 1,);
                         // delete_load_id_boat_id > If boat_id == undefined
-                        // handleEditLoadCarrierForm(ev, 204, deleteCarrierLoads[i].id.match(/\d+/)[0], 'delete');
+                        handleDeleteLoadCarrierForm(ev, 204, method, route);
                     }
                 );
             }

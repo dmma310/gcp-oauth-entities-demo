@@ -142,7 +142,7 @@ router.patch('/:boat_id/loads/:load_id', authenticatedBearerJWT, async (req, res
 });
 
 // Remove load from a boat, update carrier property in load.
-router.delete('/:boat_id/loads/:load_id', authenticatedBearerJWT, (req, res) => {
+router.delete('/:boat_id/loads/:load_id', authenticated, (req, res) => {
     try {
         Promise.all([
             BOAT.deleteLoadOnBoat(req.params.boat_id, req.params.load_id),
