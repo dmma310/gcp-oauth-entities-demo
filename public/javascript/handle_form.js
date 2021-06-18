@@ -18,7 +18,8 @@ async function handleSaveForm(ev, successCode, id = null) {
     xhr.onload = _ => {
         // If response from server is 'success', sign out (on the client side) so that all persistence is handled by the server
         if (xhr.status === successCode) {
-            location.reload();
+            location.assign(`${route.split('/')[0]}`);
+            // location.reload();
         }
         else {
             console.log(`Error ${xhr.status}: ${xhr.statusText}: ${xhr.responseText}`); // TODO: Not safe
@@ -27,12 +28,12 @@ async function handleSaveForm(ev, successCode, id = null) {
     xhr.send(json);
 }
 
-function handleEditLoadCarrierForm(ev, successCode, loadId) {
+function handleEditLoadCarrierForm(ev, successCode, loadId, method) {
     ev.preventDefault();
     let myForm = ev.target;
     const fd = new FormData(myForm);
     const boatId = fd.get('boat_id');
-    let [route, method, ...rest] = myForm.id.split("_");
+    let [route, ...rest] = myForm.id.split("_");
     route += `/${loadId}/boats/${boatId}`;
     let xhr = new XMLHttpRequest();
     xhr.open(method, `/${route}`);
@@ -40,7 +41,8 @@ function handleEditLoadCarrierForm(ev, successCode, loadId) {
     xhr.onload = _ => {
         // If response from server is 'success', sign out (on the client side) so that all persistence is handled by the server
         if (xhr.status === successCode) {
-            location.reload();
+            location.assign(`${route.split('/')[0]}`);
+            // location.reload();
         }
         else {
             console.log(`Error ${xhr.status}: ${xhr.statusText}: ${xhr.responseText}`); // TODO: Not safe
@@ -65,7 +67,8 @@ function handleDeleteForm(ev, id = null) {
     xhr.onload = _ => {
         // If response from server is 'success', sign out (on the client side) so that all persistence is handled by the server
         if (xhr.status === 204) {
-            location.reload();
+            location.assign(`${route.split('/')[0]}`);
+            // location.reload();
         }
         else {
             console.log(`Error ${xhr.status}: ${xhr.statusText}: ${xhr.responseText}`); // TODO: Not safe

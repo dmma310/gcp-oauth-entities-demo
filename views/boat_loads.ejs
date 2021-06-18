@@ -1,15 +1,9 @@
 <%- include('./partials/header.ejs') %>
-    <title>Loads</title>
-    <!-- <style>
-        .table {
-        margin: auto;
-        width: 75% !important;
-        }
-    </style> -->
+    <title>Boat Loads</title>
     </head>
 
     <body>
-        <%- include('./partials/navbar.ejs', {title: 'Loads' , active: 'Loads' }) %>
+        <%- include('./partials/navbar.ejs', {title: 'Boat Loads' , active: 'Boats' }) %>
             <div class="table-responsive">
                 <!-- <table class="table table-striped"> -->
                 <table class="table table-striped table-hover mx-auto w-auto">
@@ -61,7 +55,7 @@
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
-                                                    <form id="loads_put_form" class="needs-validation" novalidate>
+                                                    <form id="loads_modify_form" class="needs-validation" novalidate>
                                                         <form id="loads_put_form" class="needs-validation" novalidate>
                                                             <div class="modal-body mx-3">
                                                                 <div class="md-form mb-3">
@@ -117,7 +111,7 @@
                                                                 </li>
                                                                 <li>
                                                                     <a class="nav-link" id="contentEdit<%= load.id %>"
-                                                                        href="#LoadCarrierAdd<%= load.id %>"
+                                                                        href="#LoadCarrierEdit<%= load.id %>"
                                                                         data-toggle="pill" role="tab">
                                                                         Edit
                                                                     </a>
@@ -146,7 +140,7 @@
                                                             </div>
                                                         </div>
                                                         <div role="tabpanel" class="tab-pane"
-                                                            id="LoadCarrierAdd<%= load.id %>">
+                                                            id="LoadCarrierEdit<%= load.id %>">
                                                             <form id="loads_put_carrier_form" class="needs-validation"
                                                                 novalidate>
                                                                 <div class="modal-body mx-3">
@@ -156,9 +150,6 @@
                                                                         <input type="text" id="loadCarrierContent"
                                                                             name="boat_id" class="form-control validate"
                                                                             min="10" max="30"
-                                                                            <% if (load.carrier.id) { %>
-                                                                                disabled
-                                                                            <% } %>
                                                                             value="<%= load.carrier.id %>" required>
                                                                     </div>
                                                                 </div>
@@ -166,9 +157,6 @@
                                                                     role="group" aria-label="Basic example">
                                                                     <div class="modal-footer">
                                                                         <button class="btn btn-primary
-                                                                        <% if (load.carrier.id) { %>
-                                                                            disabled
-                                                                        <% } %>
                                                                             type=" submit">Submit
                                                                         </button>
                                                                     </div>
@@ -352,15 +340,13 @@
                 );
             }
 
-            // TODO: Fix this
-            // TODO: Fix boats/boat_id/loads > Should be add + assign load to boat, delete should delete load from carrier not entire load
             // Listen for deleting carrier on load
             const deleteCarrierLoads = document.getElementsByClassName("modal fade deleteLoadCarrierModal");
             for (let i = 0; i < deleteCarrierLoads.length; ++i) {
                 document.getElementById(deleteCarrierLoads[i].id).addEventListener('submit',
                     ev => {
                         // delete_load_id_boat_id > If boat_id == undefined
-                        // handleEditLoadCarrierForm(ev, 204, deleteCarrierLoads[i].id.match(/\d+/)[0], 'delete');
+                        // handleEditLoadCarrierForm(ev, deleteCarrierLoads[i].id.match(/\d+/)[0]);
                     }
                 );
             }
