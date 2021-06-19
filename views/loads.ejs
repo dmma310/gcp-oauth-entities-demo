@@ -174,21 +174,6 @@
                                                                     </div>
                                                                     <!-- Delete carrier in load -->
                                                                     <div class="modal-footer">
-                                                                        <!-- <a href="" <% if (load.carrier.id) { %>
-                                                                            class="btn btn-danger btn-rounded mb-4"
-                                                                            data-toggle="modal"
-                                                                            data-dismiss="modal"
-                                                                            data-toggle="modal"
-                                                                            data-target="#delete_boats\/<%=
-                                                                                load.carrier.id %>\/loads\/<%= load.id
-                                                                                    %>"
-                                                                                    id="deleteLoadCarrierButton"
-                                                                                    <%} else {%>
-                                                                                        class="btn btn-danger
-                                                                                        btn-rounded mb-4
-                                                                                        disabled"
-                                                                                        <%}%> > Delete
-                                                                        </a> -->
                                                                         <button class="btn btn-danger
                                                                         <% if (!load.carrier.id) { %>
                                                                             disabled
@@ -279,6 +264,12 @@
                         <a href="" class="btn btn-primary btn-rounded mb-4" data-toggle="modal"
                             data-target="#addLoadModal" id="saveLoadButton">Add
                             Load <i class="fa fa-plus ml-1"></i></a>
+
+                        <!-- Next page -->
+                        <% if (typeof(next) != "undefined") { %>
+                            <a href=<%= next %> class="btn btn-secondary btn-rounded mb-4">Next<i class="fa fa-arrow-right ml-1"></i>
+                        </a>
+                        <% } %>
                     </div>
                     <!-- Pop-up for adding load -->
                     <div class="modal fade" id="addLoadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -315,7 +306,6 @@
                             </div>
                         </div>
                     </div>
-                    </div>
     </body>
 
     <script type="text/javascript" src="/javascript/handle_form.js"></script>
@@ -334,7 +324,7 @@
             const editLoadCarrier = document.getElementsByClassName("modal fade editLoadCarrierModal");
             for (let i = 0; i < editLoadCarrier.length; ++i) {
                 document.getElementById(editLoadCarrier[i].id).addEventListener('submit', ev => {
-                    handleAddLoadCarrierForm(ev, 204, editLoadCarrier[i].id.match(/\d+/)[0], 'put');
+                    handleAddLoadCarrierForm(ev, 204, 'put', editLoadCarrier[i].id.match(/\d+/)[0]);
                 });
             }
 

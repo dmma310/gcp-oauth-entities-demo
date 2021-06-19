@@ -5,7 +5,6 @@
     <body>
         <%- include('./partials/navbar.ejs', {title: 'Boat Loads' , active: 'Boats' }) %>
             <div class="table-responsive">
-                <!-- <table class="table table-striped"> -->
                 <table class="table table-striped table-hover mx-auto w-auto">
                     <thead>
                         <tr>
@@ -55,7 +54,7 @@
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
-                                                    <form id="loads_modify_form" class="needs-validation" novalidate>
+                                                    <form id="loads_put_form" class="needs-validation" novalidate>
                                                         <form id="loads_put_form" class="needs-validation" novalidate>
                                                             <div class="modal-body mx-3">
                                                                 <div class="md-form mb-3">
@@ -111,7 +110,7 @@
                                                                 </li>
                                                                 <li>
                                                                     <a class="nav-link" id="contentEdit<%= load.id %>"
-                                                                        href="#LoadCarrierEdit<%= load.id %>"
+                                                                        href="#LoadCarrierAdd<%= load.id %>"
                                                                         data-toggle="pill" role="tab">
                                                                         Edit
                                                                     </a>
@@ -140,7 +139,7 @@
                                                             </div>
                                                         </div>
                                                         <div role="tabpanel" class="tab-pane"
-                                                            id="LoadCarrierEdit<%= load.id %>">
+                                                            id="LoadCarrierAdd<%= load.id %>">
                                                             <form id="loads_put_carrier_form" class="needs-validation"
                                                                 novalidate>
                                                                 <div class="modal-body mx-3">
@@ -149,7 +148,10 @@
                                                                             for="loadContent">Boat ID</label>
                                                                         <input type="text" id="loadCarrierContent"
                                                                             name="boat_id" class="form-control validate"
-                                                                            min="10" max="30"
+                                                                            min="10" max="30" <% if (load.carrier.id) {
+                                                                            %>
+                                                                        disabled
+                                                                        <% } %>
                                                                             value="<%= load.carrier.id %>" required>
                                                                     </div>
                                                                 </div>
@@ -157,27 +159,23 @@
                                                                     role="group" aria-label="Basic example">
                                                                     <div class="modal-footer">
                                                                         <button class="btn btn-primary
+                                                                        <% if (load.carrier.id) { %>
+                                                                            disabled
+                                                                        <% } %>
                                                                             type=" submit">Submit
                                                                         </button>
                                                                     </div>
                                                                     <!-- Delete carrier in load -->
                                                                     <div class="modal-footer">
-                                                                        <a href=""
-                                                                        <% if (load.carrier.id) { %>
-                                                                            class="btn btn-danger btn-rounded mb-4"
-                                                                            data-toggle="modal"
-                                                                            data-dismiss="modal"
-                                                                            data-toggle="modal"
-                                                                            data-target="#delete_loads_<%= load.id %>
-                                                                                _boats_<%= load.carrier.id %>"
-                                                                                    id="deleteLoadCarrierButton"
-                                                                        <%} else {%>
-                                                                            class="btn btn-danger
-                                                                            btn-rounded mb-4
-                                                                            disabled"
-                                                                        <%}%>
-                                                                        >Delete<i class="fa fa-trash ml-1"></i>
-                                                                        </a>
+                                                                        <button class="btn btn-danger
+                                                                        <% if (!load.carrier.id) { %>
+                                                                            disabled
+                                                                        <% } %>
+                                                                        data-toggle=" modal" data-dismiss="modal"
+                                                                            data-toggle="modal" data-target="#delete_boats\/<%=
+                                                                            load.carrier.id %>\/loads\/<%= load.id
+                                                                                %>" type=" submit">Delete
+                                                                        </button>
                                                                     </div>
                                                                 </div>
                                                             </form>
@@ -191,7 +189,7 @@
             </td>
 
             <!-- Pop-up for deleting carrier on load (inside another modal)-->
-            <div class="modal fade deleteLoadCarrierModal" id="delete_loads_<%= load.id %>_boats_<%= load.carrier.id %>"
+            <div class="modal fade deleteLoadCarrierModal" id="delete_boats/<%= load.carrier.id %>/loads/<%= load.id %>"
                 tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -215,7 +213,6 @@
                     </div>
                 </div>
             </div>
-
 
             <!-- Delete Load -->
             <td>
@@ -259,6 +256,12 @@
                         <a href="" class="btn btn-primary btn-rounded mb-4" data-toggle="modal"
                             data-target="#addLoadModal" id="saveLoadButton">Add
                             Load <i class="fa fa-plus ml-1"></i></a>
+                            
+                        <!-- Next page -->
+                        <% if (typeof(next) != "undefined") { %>
+                            <a href=<%= next %> class="btn btn-secondary btn-rounded mb-4">Next<i class="fa fa-arrow-right ml-1"></i>
+                        </a>
+                        <% } %>
                     </div>
                     <!-- Pop-up for adding load -->
                     <div class="modal fade" id="addLoadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -306,7 +309,7 @@
                 .getElementById('loads_post_form')
                 // TODO: Handle save.
                 .addEventListener('submit', ev => {
-                    handleSaveForm(ev, 201);
+                    handleCreateAndAssignLoadToBoat(ev, 201, <%- JSON.stringify(boatId) %>);
                 }); // From handle_form
 
             // Listen for adding carrier to load. Boat/Carrier also updated with this load.
@@ -314,7 +317,7 @@
             const editLoadCarrier = document.getElementsByClassName("modal fade editLoadCarrierModal");
             for (let i = 0; i < editLoadCarrier.length; ++i) {
                 document.getElementById(editLoadCarrier[i].id).addEventListener('submit', ev => {
-                    handleEditLoadCarrierForm(ev, 204, editLoadCarrier[i].id.match(/\d+/)[0], 'put');
+                    handleAddLoadCarrierForm(ev, 204, 'put', editLoadCarrier[i].id.match(/\d+/)[0]);
                 });
             }
 
@@ -340,13 +343,17 @@
                 );
             }
 
+            // TODO: Fix this
+            // TODO: Fix boats/boat_id/loads > Should be add + assign load to boat, delete should delete load from carrier not entire load
             // Listen for deleting carrier on load
             const deleteCarrierLoads = document.getElementsByClassName("modal fade deleteLoadCarrierModal");
             for (let i = 0; i < deleteCarrierLoads.length; ++i) {
                 document.getElementById(deleteCarrierLoads[i].id).addEventListener('submit',
                     ev => {
+                        const method = deleteCarrierLoads[i].id.substr(0, deleteCarrierLoads[i].id.indexOf('_'));
+                        const route = deleteCarrierLoads[i].id.substr(method.length + 1,);
                         // delete_load_id_boat_id > If boat_id == undefined
-                        // handleEditLoadCarrierForm(ev, deleteCarrierLoads[i].id.match(/\d+/)[0]);
+                        handleDeleteLoadCarrierForm(ev, 204, method, route);
                     }
                 );
             }
