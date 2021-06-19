@@ -105,16 +105,16 @@ function convertFDToJSON(formData) {
 // TODO: Refactor this. Similar to handleSaveForm + handleAddLoadCarrierForm, need to prevent location.reload(), and get and pass loadId
 async function handleCreateAndAssignLoadToBoat(ev, successCode, boatId) {
     ev.preventDefault(); //stop the page reloading
-    
+
     let myForm = ev.target;
     let fd = new FormData(myForm);
-    
+
     // Form id must be named route_method_somethingElse (i.e. boats_post_form)
     let [route, method, ...rest] = myForm.id.split("_");
     let json = await convertFDToJSON(fd);
-    
+
     let xhr = new XMLHttpRequest();
-    
+
     xhr.open(method, `/${route}`);
     xhr.setRequestHeader('Content-Type', 'application/json');
     // Process response from server

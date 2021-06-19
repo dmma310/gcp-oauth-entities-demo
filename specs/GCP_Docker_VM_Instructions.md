@@ -1,10 +1,10 @@
 ## Deploy docker container
 - Create Dockerfile and .dockerignore
 - Build image with tag name
-    - docker build -t [IMAGE_TAG] [DIR]
-    - docker image ls
+  - docker build -t [IMAGE_TAG] [DIR]
+  - docker image ls
 - Run detached container and bind to all exposed ports
-    - docker run -d --name df -P [IMAGE_TAG]
+  - docker run -d --name df -P [IMAGE_TAG]
 Remove image (must remove all containers first)
 - docker container ls -a
 - docker rm [OPTIONS] CONTAINER [CONTAINER...] OR docker system prune
@@ -25,7 +25,7 @@ Deploy to Google Container Registries
 - Get full repository name [URL] in Tools > Container Registry
 - Create VM with Container Image as [URL]
   - NOTE: If using Google OAuth, when creating VM instance, will need to buy public domain and map that to external IP of VM
-    - In APIs & Services, add this hostname as Authorized Javascript Origins in Credentials, and Authorized Domains in OAuth Consent Screen
+  - In APIs & Services, add this hostname as Authorized Javascript Origins in Credentials, and Authorized Domains in OAuth Consent Screen
 - ALTERNATIVE: Got to Container Registry > Click on ... > Deploy to GCE
 - Create firewall rule on VM: View Network Details > Firewall > Create Firewall Rule
   - Targets > All instances

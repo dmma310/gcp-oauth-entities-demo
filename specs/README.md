@@ -1,3 +1,6 @@
+# Application URL
+https://gcp-demo-dex.wl.r.appspot.com
+
 Full stack app using Node.js, Express.js, GCP (Datastore & OAuth), EJS and Bootstrap 4
 Users, Boats, Loads Entities
 Relationships between: Boats <> Users; Boats <> Loads
@@ -103,4 +106,34 @@ Postman Test Collection
   - Show the resources after the relationship has been created (or removed)
 
 ## Frontend
-
+- EJS and Bootstrap 4
+- Redirect to login page if not logged in
+- Boats Page
+  - Displays paginated Boats that user owns
+    - Id, name, type, length
+  - Edit Boat
+  - View loads on each boat that user owns
+    - Id, volume, content, created date
+    - Edit Load
+    - View/Edit associated carrier (boat), including removing Load from Boat
+    - Delete Load
+    - Add Load
+      - Creates new Load and assigns it to Boat
+  - Delete Boat
+  - Add Boat
+    - Creates new Boat
+- Loads Page
+  - Displays paginated Loads that user owns
+    - Id, volume, content, created date
+  - Edit Load
+  - View/Edit associated carrier (boat), including removing Load from Boat
+  - Delete Load
+  - Add Load
+    - Creates new Load
+  - Delete Boat
+- User Info Page
+  - Google Photo
+  - ID
+  - Family Name
+  - Given Name
+  - Email Address

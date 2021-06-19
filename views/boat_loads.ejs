@@ -261,6 +261,8 @@
                         <% if (typeof(next) != "undefined") { %>
                             <a href=<%= next %> class="btn btn-secondary btn-rounded mb-4">Next<i class="fa fa-arrow-right ml-1"></i>
                         </a>
+                        <% } else { %>
+                            <a href="" class="btn btn-secondary btn-rounded mb-4 disabled">Next<i class="fa fa-arrow-right ml-1"></i>
                         <% } %>
                     </div>
                     <!-- Pop-up for adding load -->
