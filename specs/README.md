@@ -1,3 +1,7 @@
+Full stack app using Node.js, Express.js, GCP (Datastore & OAuth), EJS and Bootstrap 4
+Users, Boats, Loads Entities
+Relationships between: Boats <> Users; Boats <> Loads
+
 # Google OAuth
 
 1. Create new API credentials

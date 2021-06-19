@@ -121,7 +121,7 @@ async function handleCreateAndAssignLoadToBoat(ev, successCode, boatId) {
     xhr.onload = _ => {
         if (xhr.status === successCode) {
             const loadId = JSON.parse(xhr.response).id; // Get id of new load
-            handleAddLoadCarrierForm(ev, successCode, 'put', loadId, `boats/${boatId}/loads/${loadId}`);
+            handleAddLoadCarrierForm(ev, 204, 'put', loadId, `loads/${loadId}/boats/${boatId}`);
         }
         else {
             console.log(`Error ${xhr.status}: ${xhr.statusText}: ${xhr.responseText}`); // TODO: Not safe
