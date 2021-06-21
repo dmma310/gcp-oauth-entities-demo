@@ -157,14 +157,17 @@
             <div class="text-center">
                 <a href="" class="btn btn-primary btn-rounded mb-4" data-toggle="modal" data-target="#addBoatModal"
                     id="saveBoatButton">Add
-                    Boat <i class="fa fa-plus ml-1"></i></a>
-                    <!-- Next page -->
-                    <% if (typeof(next) != "undefined") { %>
-                        <a href=<%= next %> class="btn btn-secondary btn-rounded mb-4">Next<i class="fa fa-arrow-right ml-1"></i>
+                    Boat <i class="fa fa-plus ml-1"></i>
+                </a>
+                <!-- Next page -->
+                <% if (typeof(next) !="undefined" ) { %>
+                    <a href=<%=next %> class="btn btn-secondary btn-rounded mb-4">Next<i
+                            class="fa fa-arrow-right ml-1"></i>
                     </a>
                     <% } else { %>
-                        <a href="" class="btn btn-secondary btn-rounded mb-4 disabled">Next<i class="fa fa-arrow-right ml-1"></i>
-                    <% } %>
+                        <a href="" class="btn btn-secondary btn-rounded mb-4 disabled">Next<i
+                                class="fa fa-arrow-right ml-1"></i></a>
+                        <% } %>
             </div>
 
             <!-- Pop-up for adding boat -->

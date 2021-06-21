@@ -1,4 +1,11 @@
 const express = require('express');
+
+const { JSDOM } = require( "jsdom" );
+const { window } = new JSDOM( "" );
+const $ = require( "jquery" )( window );
+
+const toastr = require('toastr');
+
 const { USER } = require('../lib/constants');
 const { fromDatastore, getFilteredEntities } = require('../lib/datastore');
 const { authenticatedBearerJWT, authenticated } = require('../lib/googleOAuth');
@@ -15,11 +22,10 @@ router.get('/', isJsonAcceptHeader, authenticated, async (req, res) => {
     try {
         // TODO: Instead of setting session-token in browser, set Authorization Bearer so we can use one authenticated function
         // Get user ID from authenticated JWT
-        let boat = await getUserByGoogleCreds(req, req.user.googleId);
-        boat = fromDatastore(boat.items[0]);
-        const boats = await BOAT.getFilteredBoats(req, 'owner', boat.id);
+        let user = await getUserByGoogleCreds(req, req.user.googleId);
+        user = fromDatastore(user.items[0]);
+        const boats = await BOAT.getFilteredBoats(req, 'owner', user.id);
         return res.render('boats', boats);
-        // return res.status(200).json(boats);
     }
     catch (e) {
         console.log(e);
@@ -92,6 +98,7 @@ router.post('/', isValidJsonSyntax, isValidContentTypeHeader, isValidBoatName,
             // Get user ID associated with valid JWT, set owner field
             const key = await BOAT.saveBoat(req.body);
             res.location(req.protocol + '://' + req.get('host') + req.baseUrl + '/' + key.id); // Set url to resource in location attribute of header
+            toastr.success('New Boat successfully created');
             return res.status(201).json(
                 {
                     id: key.id,
@@ -105,6 +112,7 @@ router.post('/', isValidJsonSyntax, isValidContentTypeHeader, isValidBoatName,
         }
         catch (e) {
             console.log(e);
+            toastr.error('Could not add item to database');
             return res.status(400).send('Could not add item to database');
         }
     });

@@ -256,14 +256,16 @@
                         <a href="" class="btn btn-primary btn-rounded mb-4" data-toggle="modal"
                             data-target="#addLoadModal" id="saveLoadButton">Add
                             Load <i class="fa fa-plus ml-1"></i></a>
-                            
+
                         <!-- Next page -->
-                        <% if (typeof(next) != "undefined") { %>
-                            <a href=<%= next %> class="btn btn-secondary btn-rounded mb-4">Next<i class="fa fa-arrow-right ml-1"></i>
-                        </a>
-                        <% } else { %>
-                            <a href="" class="btn btn-secondary btn-rounded mb-4 disabled">Next<i class="fa fa-arrow-right ml-1"></i>
-                        <% } %>
+                        <% if (typeof(next) !="undefined" ) { %>
+                            <a href=<%=next %> class="btn btn-secondary btn-rounded mb-4">Next<i
+                                    class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                            <% } else { %>
+                                <a href="" class="btn btn-secondary btn-rounded mb-4 disabled">Next<i
+                                        class="fa fa-arrow-right ml-1"></i></a>
+                                <% } %>
                     </div>
                     <!-- Pop-up for adding load -->
                     <div class="modal fade" id="addLoadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -311,7 +313,7 @@
                 .getElementById('loads_post_form')
                 // TODO: Handle save.
                 .addEventListener('submit', ev => {
-                    handleCreateAndAssignLoadToBoat(ev, 201, <%- JSON.stringify(boatId) %>);
+                    handleCreateAndAssignLoadToBoat(ev, 201, <% - JSON.stringify(boatId) %>);
                 }); // From handle_form
 
             // Listen for adding carrier to load. Boat/Carrier also updated with this load.
