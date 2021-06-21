@@ -161,11 +161,11 @@
                 </a>
                 <!-- Next page -->
                 <% if (typeof(next) !="undefined" ) { %>
-                    <a href=<%=next %> class="btn btn-secondary btn-rounded mb-4">Next<i
+                    <a href="<%= next %>" class="btn btn-secondary btn-rounded mb-4 get_next_boat_page" id="<%=next %>">Next<i
                             class="fa fa-arrow-right ml-1"></i>
                     </a>
                     <% } else { %>
-                        <a href="" class="btn btn-secondary btn-rounded mb-4 disabled">Next<i
+                        <a href="#" class="btn btn-secondary btn-rounded mb-4 disabled">Next<i
                                 class="fa fa-arrow-right ml-1"></i></a>
                         <% } %>
             </div>
@@ -214,11 +214,63 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Message toast-->
+            <% if (typeof(locals.message) !="undefined" ) { %>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>
+                        <%= message %>
+                    </strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <% if (typeof(locals.message.success) !="undefined" ) { %>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>
+                            <%= message.success %>
+                        </strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <% } else if (typeof(locals.message.error) !="undefined" ) { %>
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <strong>
+                                <%= message.error %>
+                            </strong>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <% } %>
+                            <% } %>
     </body>
     <script type="text/javascript" src="/javascript/boat_validation.js"></script>
     <script type="text/javascript" src="/javascript/handle_form.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Listen for next page click
+            // NOTE: Only one element should have this class
+            // const nextPageObj = document.getElementsByClassName('get_next_boat_page')[0];
+            // nextPageObj.addEventListener('click', (ev) => {
+            //     let xhr = new XMLHttpRequest();
+
+            //     xhr.open('get', nextPageObj.id, true);
+            //     xhr.withCredentials = true;
+            //     xhr.setRequestHeader('accept', 'application/json');
+            //     // Process response from server
+            //     xhr.onload = _ => {
+            //         if (xhr.status === 200) {
+            //             console.log(xhr.response)
+            //         }
+            //         else {
+            //             console.log(`Error ${xhr.status}: ${xhr.statusText}: ${xhr.responseText}`); // TODO: Not safe
+            //         }
+            //     };
+            //     xhr.send();
+            // });
+
             // Listen for adding boat
             document
                 .getElementById('boats_post_form')

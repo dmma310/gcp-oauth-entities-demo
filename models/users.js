@@ -1,4 +1,4 @@
-const { datastore, getFilteredEntities, getEntity } = require('../lib/datastore');
+const { datastore, fromDatastore, getFilteredEntities, getEntity } = require('../lib/datastore');
 const { USER } = require('../lib/constants');
 
 module.exports.getUsers = async req => {
@@ -21,8 +21,22 @@ module.exports.saveUser = async (user, id = null) => {
     return key;
 }
 
-module.exports.getUserByGoogleCreds = (req, googleId) => {
-    return getFilteredEntities(req, USER, 'googleId', googleId);
+module.exports.getUserByGoogleCreds = async (googleId) => {
+    // ! Cannot use getFilteredEntities with "next" boat link because req.query includes cursor for BOAT.
+    // ! When trying to get user, it will include this query and return this error:
+    // ! Error: 3 INVALID_ARGUMENT: The query kind is user but cursor.postfix_position.key kind is boat.
+    const q = datastore.createQuery(USER).filter('googleId', googleId);
+    try {
+        // Get all entities, add id property to each, save in results
+        const entities = await datastore.runQuery(q);
+        const results = {};
+        results.items = entities[0].map(fromDatastore);
+        results.count = results.items.length;
+        return results;
+    }
+    catch (e) {
+        throw (e);
+    }
 }
 
 module.exports.userModel = ({ sub, email, given_name, family_name, picture, googleIdJWT = null }) => {
