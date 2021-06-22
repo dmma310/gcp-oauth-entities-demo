@@ -3,7 +3,7 @@ const router = express.Router();
 
 const { USER } = require('../lib/constants');
 const { fromDatastore, getFilteredEntities } = require('../lib/datastore');
-const { authenticatedBearerJWT, authenticated } = require('../lib/googleOAuth');
+const {authenticated } = require('../lib/googleOAuth');
 const { isValidJsonSyntax, isValidBoatName, isValidBoatLength, isValidBoatType,
     isValidBoatPostBody, isValidGetAcceptHeader, isJsonAcceptHeader, isValidContentTypeHeader,
     isValidBoatPatchBody } = require('../lib/validators');
@@ -29,12 +29,10 @@ router.get('/', isJsonAcceptHeader, authenticated, async (req, res) => {
 
 // View a boat
 router.get('/:id', isValidGetAcceptHeader, authenticated, (req, res) => {
-    // router.get('/:id', isValidGetAcceptHeader, authenticatedBearerJWT, (req, res) => {
     // Get user ID from validated JWT and boat, compare id to owner
     Promise.all(
         [
             getFilteredEntities(req, USER, 'googleId', req.user.googleId),
-            // getFilteredEntities(req, USER, 'googleId', req.googleId),
             BOAT.getBoat(req.params.id)
         ]
     ).then(vals => {
@@ -111,7 +109,7 @@ router.post('/', isValidJsonSyntax, isValidContentTypeHeader, isValidBoatName,
 
 
 // Assign a load to a boat, update load
-router.patch('/:boat_id/loads/:load_id', authenticatedBearerJWT, async (req, res) => {
+router.patch('/:boat_id/loads/:load_id', authenticated, async (req, res) => {
     try {
         let newLoad = await LOAD.getLoad(req.params.load_id);
         // Update load with new carrier
@@ -126,8 +124,6 @@ router.patch('/:boat_id/loads/:load_id', authenticatedBearerJWT, async (req, res
             };
             // Wait for both load to be updated with new carrier, and boat to be updated with new load added
             Promise.all([
-                // LOAD.saveLoad(newLoad.id, newLoad.volume, newLoad.content,
-                //     newLoad.carrier, newLoad.creationDate),
                 LOAD.saveLoad(newLoad),
                 BOAT.putLoadOnBoat(req)
             ]).then(_ => res.sendStatus(204));
@@ -184,7 +180,7 @@ router.put('/:id', isValidJsonSyntax, isValidContentTypeHeader,
     authenticated, (req, res) => {
         // Get owner and current boat concurrently
         return Promise.all([
-            getFilteredEntities(req, USER, 'googleId', req.googleId),
+            getFilteredEntities(req, USER, 'googleId', req.user.googleId),
             BOAT.getBoat(req.params.id)
         ]).then(vals => {
             req.body.owner = vals[0].items[0].id;
@@ -206,7 +202,7 @@ router.put('/:id', isValidJsonSyntax, isValidContentTypeHeader,
 // TODO: Allow modifying loads and owner
 router.patch('/:id', isValidJsonSyntax, isValidContentTypeHeader, isValidBoatName,
     isValidBoatType, isValidBoatPatchBody, isValidBoatLength,
-    authenticatedBearerJWT, (req, res) => {
+    authenticated, (req, res) => {
         // Get owner and current boat concurrently
         Promise.all([
             getFilteredEntities(req, USER, 'googleId', req.googleId),
