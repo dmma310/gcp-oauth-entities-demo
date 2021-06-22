@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
       secure: true // cookie must be sent over https / ssl
     }); // Set token sent from client (see onSignIn)
     // Find or create user in DB
-    const val = await getUserByGoogleCreds(req, payload.sub); // Assume googleId is unique
+    const val = await getUserByGoogleCreds( payload.sub); // Assume googleId is unique
     // Create new user if does not exist
     if (!val.items.length) {
       await saveUser(userModel(payload));

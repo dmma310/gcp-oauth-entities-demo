@@ -14,13 +14,11 @@
   "dependencies": {
     "@google-cloud/datastore": "^6.3.1",
     "@google-cloud/storage": "^5.8.3",
-    "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.5",
     "dotenv": "^8.2.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
-    "express-toastr": "^1.1.0",
     "google-auth-library": "^7.0.4",
     "googleapis": "^73.0.0",
     "path": "^0.12.7"

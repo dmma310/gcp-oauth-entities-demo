@@ -14,13 +14,11 @@ const { getUserByGoogleCreds } = require('../models/users');
 
 router.get('/', isJsonAcceptHeader, authenticated, async (req, res) => {
     try {
-        // TODO: Instead of setting session-token in browser, set Authorization Bearer so we can use one authenticated function
         // Get user ID from authenticated JWT
         let user = await getUserByGoogleCreds(req.user.googleId);
 
         user = await fromDatastore(user.items[0]);
         const boats = await BOAT.getFilteredBoats(req, 'owner', user.id);
-        // res.locals.message = req.flash('Success!');
         return res.render('boats', boats);
     }
     catch (e) {
@@ -94,7 +92,6 @@ router.post('/', isValidJsonSyntax, isValidContentTypeHeader, isValidBoatName,
             // Get user ID associated with valid JWT, set owner field
             const key = await BOAT.saveBoat(req.body);
             res.location(req.protocol + '://' + req.get('host') + req.baseUrl + '/' + key.id); // Set url to resource in location attribute of header
-            res.locals.message = req.flash('success', 'Success!');
             return res.status(201).json(
                 {
                     id: key.id,
@@ -108,7 +105,6 @@ router.post('/', isValidJsonSyntax, isValidContentTypeHeader, isValidBoatName,
         }
         catch (e) {
             console.log(e);
-            res.locals.message = req.flash('error', 'Success!');
             return res.status(400).send('Could not add item to database');
         }
     });

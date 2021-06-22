@@ -8,7 +8,6 @@ app.use(express.urlencoded());
 app.use(express.static(__dirname + 'public')); // For css
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
-const flash = require('connect-flash');
 app.use(cookieParser());
 
 require('dotenv').config();
@@ -31,8 +30,6 @@ app.use(session({
   saveUninitialized: true,
   secret: `${process.env.SESSION_SECRET}`
 }));
-
-app.use(flash());
 
 app.use('/', require('./index'));
 
