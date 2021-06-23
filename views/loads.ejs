@@ -39,7 +39,7 @@
                                         <div>
                                             <a href="" class="btn btn-info btn-rounded mb-4" data-toggle="modal"
                                                 data-target="#editLoadModal<%= load.id %>" id="editLoadButton">Edit <i
-                                                    class="fa fa-edit"></i></a>
+                                                    class="fa fa-edit" aria-label="Edit Load"></i></a>
                                         </div>
                                         <!-- Pop-up for editing load -->
                                         <div class="modal fade editLoadModal" id="editLoadModal<%= load.id %>"
@@ -265,6 +265,7 @@
                         </a>
                         <% } else { %>
                             <a href="" class="btn btn-secondary btn-rounded mb-4 disabled">Next<i class="fa fa-arrow-right ml-1"></i>
+                            </a>
                         <% } %>
                     </div>
                     <!-- Pop-up for adding load -->
