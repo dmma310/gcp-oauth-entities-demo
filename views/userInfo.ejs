@@ -4,7 +4,7 @@
     <!-- Specify client id -->
     <meta name="google-signin-client_id" content=<%=process.env.GCLOUD_CLIENT_ID %>>
     <style>
-    /*Wrap text*/
+        /*Wrap text*/
         .list-group-item {
             word-break: break-all;
         }
@@ -27,23 +27,29 @@
                     }
                 }
             </script>
-
-            <div class="text-center">
-                <img src="<%= picture %>" class="rounded" alt="">
+            <div class="row justify-content-center align-items-center" style="margin-top: 4rem;">
+            <!-- <div class="col-sm-6">
+                    <img src="<%= picture %>" class="rounded" alt="">
+                </div> -->
+            <div class="col-sm-6" align="center">
+                <div class="card w-50">
+                    <img class="card-img-top" src="<%= picture %>" alt="Card image cap" style="max-height: 15vw;">
+                    <div class="card-body">
+                        <h5 class="card-title">Details</h5>
+                        <p class="card-text">Details from your Google Account.</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">user id: <%= googleId %>
+                        </li>
+                        <li class="list-group-item">given name: <%= givenName %>
+                        </li>
+                        <li class="list-group-item">family name: <%= familyName %>
+                        </li>
+                        <li class="list-group-item">email: <%= email %>
+                    </ul>
+                </div>
             </div>
-            <ul class="list-group">
-                <li class="list-group-item">user id: <%= googleId %>
-                </li>
-                <li class="list-group-item">given name: <%= givenName %>
-                </li>
-                <li class="list-group-item">family name: <%= familyName %>
-                </li>
-                <li class="list-group-item">email: <%= email %>
-                </li>
-                <!-- <li class="list-group-item">id token: <%= googleIdJWT %>
-                </li> -->
-            </ul>
-
+            </div>
     </body>
 
-</html>
+    </html>
