@@ -42,6 +42,7 @@ function handleAddLoadCarrierForm(ev, successCode, method, loadId, route = null)
     // Process response from server
     xhr.onload = _ => {
         if (xhr.status === successCode) {
+            console.log('success 2');
             location.reload();
         }
         else {
@@ -120,6 +121,7 @@ async function handleCreateAndAssignLoadToBoat(ev, successCode, boatId) {
     // Process response from server
     xhr.onload = _ => {
         if (xhr.status === successCode) {
+            console.log('success 1')
             const loadId = JSON.parse(xhr.response).id; // Get id of new load
             handleAddLoadCarrierForm(ev, 204, 'put', loadId, `loads/${loadId}/boats/${boatId}`);
         }

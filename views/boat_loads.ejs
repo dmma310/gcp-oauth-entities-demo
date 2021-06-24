@@ -313,7 +313,7 @@
                 .getElementById('loads_post_form')
                 // TODO: Handle save.
                 .addEventListener('submit', ev => {
-                    handleCreateAndAssignLoadToBoat(ev, 201, <% - JSON.stringify(boatId) %>);
+                    handleCreateAndAssignLoadToBoat(ev, 201, <%- JSON.stringify(boatId) %>);
                 }); // From handle_form
 
             // Listen for adding carrier to load. Boat/Carrier also updated with this load.
