@@ -43,12 +43,9 @@ module.exports.deleteCarrierInLoad = async id => {
     return key;
 }
 
-function loadDAO(volume, content, carrier, creationDate) {
+function loadDAO(volume, content, carrier, creationDate = (new Date()).toLocaleDateString()) {
     if (carrier == null) {
         carrier = {};
-    }
-    if (creationDate == null) {
-        creationDate = (new Date()).toLocaleDateString();
     }
     return { "volume": volume, "carrier": carrier, "content": content, "creationDate": creationDate };
 }

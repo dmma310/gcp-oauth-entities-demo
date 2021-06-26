@@ -9,10 +9,17 @@ const { isValidGetAcceptHeader, isValidJsonSyntax, isValidContentTypeHeader,
     require('../lib/validators');
 
 // View all loads
-router.get('/', isJsonAcceptHeader, async (req, res) => {
+router.get('/', isValidGetAcceptHeader, async (req, res) => {
+// router.get('/', isJsonAcceptHeader, async (req, res) => {
     try {
         const loads = await LOAD.getLoads(req);
-        return res.render('loads', loads);
+        if (accepts === 'text/html') {
+            res.set(('Content-Type', 'text/html'));
+            return res.status(200).render('loads', loads);
+        } else if (accepts === 'application/json') {
+            res.set(('Content-Type', 'application/json'));
+            return res.status(200).json(loads);
+        } else { return res.status(500).send('Content-Type got messed up!'); }
     }
     catch (e) {
         console.log(e);

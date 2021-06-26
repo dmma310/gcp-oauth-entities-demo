@@ -1,6 +1,6 @@
 const express = require('express');
 const { LOAD, BOAT } = require('./lib/constants');
-const { deleteAllEntities } = require('./lib/datastore');
+// const { deleteAllEntities } = require('./lib/datastore');
 const { authenticated } = require('./lib/googleOAuth');
 const { isAdmin } = require('./lib/validators');
 const router = express.Router();
@@ -26,19 +26,19 @@ router.use('/loads', require('./controllers/loads')); // Handle all requests to 
 router.use('/login', require('./controllers/login')); // Handle all requests to login
 router.use('/users', require('./controllers/users')); // Handle all requests to users
 
-router.delete('/entities', isAdmin, (req, res) => {
-    Promise.all([
-        deleteAllEntities(BOAT, boat.deleteBoat),
-        deleteAllEntities(LOAD, load.deleteLoad)
-    ])
-        .then(_ => {
-            return res.sendStatus(204);
-        })
-        .catch(e => {
-            console.log(e);
-            return res.sendStatus(404);
-        });
-});
+// router.delete('/entities', isAdmin, (req, res) => {
+//     Promise.all([
+//         deleteAllEntities(BOAT, boat.deleteBoat),
+//         deleteAllEntities(LOAD, load.deleteLoad)
+//     ])
+//         .then(_ => {
+//             return res.sendStatus(204);
+//         })
+//         .catch(e => {
+//             console.log(e);
+//             return res.sendStatus(404);
+//         });
+// });
 
 
 module.exports = router;

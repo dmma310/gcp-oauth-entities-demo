@@ -12,14 +12,21 @@ const BOAT = require('../models/boats');
 const LOAD = require('../models/loads');
 const { getUserByGoogleCreds } = require('../models/users');
 
-router.get('/', isJsonAcceptHeader, authenticated, async (req, res) => {
+router.get('/', isValidGetAcceptHeader, authenticated, async (req, res) => {
+// router.get('/', isJsonAcceptHeader, authenticated, async (req, res) => {
     try {
         // Get user ID from authenticated JWT
         let user = await getUserByGoogleCreds(req.user.googleId);
-
         user = await fromDatastore(user.items[0]);
         const boats = await BOAT.getFilteredBoats(req, 'owner', user.id);
-        return res.render('boats', boats);
+
+        if (accepts === 'text/html') {
+            res.set(('Content-Type', 'text/html'));
+            return res.status(200).render('boats', boats);
+        } else if (accepts === 'application/json') {
+            res.set(('Content-Type', 'application/json'));
+            return res.status(200).json(boats);
+        } else { return res.status(500).send('Content-Type got messed up!'); }
     }
     catch (e) {
         console.log(e);
@@ -42,12 +49,12 @@ router.get('/:id', isValidGetAcceptHeader, authenticated, (req, res) => {
             const accepts = req.accepts(['application/json', 'text/html']); // Get accept header
             boatObj.self = req.protocol + '://' + req.get('host') + req.originalUrl; // req.originalUrl = /boats/:id
             res.location(boatObj.self); // Set url to resource in location attribute of header
-            if (accepts === 'application/json') {
-                res.set(('Content-Type', 'application/json'));
-                return res.status(200).json(boatObj);
-            } else if (accepts === 'text/html') {
+            if (accepts === 'text/html') {
                 res.set(('Content-Type', 'text/html'));
                 return res.status(200).render('boat', boatObj);
+            } else if (accepts === 'application/json') {
+                res.set(('Content-Type', 'application/json'));
+                return res.status(200).json(boatObj);
             } else { return res.status(500).send('Content-Type got messed up!'); }
         }
         else {
