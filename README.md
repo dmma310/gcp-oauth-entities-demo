@@ -135,7 +135,6 @@ Postman Test Collection
   - Delete Boat
 - User Info Page
   - Google Photo
-  - ID
   - Family Name
   - Given Name
   - Email Address
