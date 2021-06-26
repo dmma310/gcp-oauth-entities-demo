@@ -138,3 +138,7 @@ Postman Test Collection
   - Family Name
   - Given Name
   - Email Address
+
+  ## TODO
+  - Refactor backend code
+  - Refactor ejs to take advantage of templating abilities
