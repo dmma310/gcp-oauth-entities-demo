@@ -5,7 +5,6 @@ const { datastoreStore } = require('./lib/datastore');
 const { EXPRESS_SESSION_COOKIE_EXPIRY } = require('./lib/constants');
 app.use(express.json());
 app.use(express.urlencoded());
-app.use(express.static(__dirname + 'public')); // For css
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
