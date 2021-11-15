@@ -18,7 +18,6 @@ module.exports.getFilteredBoats = async (req, field, value) => {
     return await getFilteredEntities(req, BOAT, field, value);
 }
 
-// module.exports.getBoat = function getBoat(id) {
 module.exports.getBoat = id => {
     return getEntity(BOAT, id);
 }
