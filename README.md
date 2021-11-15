@@ -135,3 +135,14 @@ Postman Test Collection
   ## TODO
   - Refactor backend code
   - Refactor ejs to take advantage of templating abilities
+ 
+ # OAuth 2.0 Flow
+
+Source: https://www.youtube.com/watch?v=996OiexHze0&t=3252s
+
+
+![Alt text](./public/images/OAuth 2.0 Flow)
+![Alt text](./public/images/OAuth 2.0 Code 1)
+![Alt text](./public/images/OAuth 2.0 Code 2)
+![Alt text](./public/images/OAuth 2.0 Code 3)
+![Alt text](./public/images/OAuth 2.0 Code 4)
