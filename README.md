@@ -45,7 +45,7 @@ Application on Google Cloud Platform.
   - id and self are not considered a property in this count.
   - Properties to model related entities are also not considered a property in this count.
     - E.g., a boat is not a property of a load, and neither is the owner of a boat.
-7. Every entity must supports all 4 CRUD operations, i.e., create/add, read/get, update/edit and delete.
+7. Every entity supports all 4 CRUD operations, i.e., create/add, read/get, update/edit and delete.
   - All &quot;side effects&quot; are handled
     - E.g., If a load is removed from a boat, the load also removes its boat/carrier to become empty
   - Update for an entity supports both PUT and PATCH.
@@ -62,19 +62,12 @@ Application on Google Cloud Platform.
 
 ### User Details
 
-1. You must have a User entity in your database.
-2. You must support the ability for users of the application to create user accounts. There is no requirement to edit or delete users.
-3. You may choose from the following methods of handling user accounts
-  - You can handle all account creation and authentication yourself.
-  - You can use a 3rd party authentication service (e.g., Auth0 or Google).
-4. You must provide a URL where a user can provide a username and password to login or create a user account.
-5. Requests for the protected resources must use a JWT for authentication. So you must show the JWT to the user after the login. You must also show the user&#39;s unique ID after login.
-6. The choice of what to use as the user&#39;s unique ID is up to you.
-  - You can use the value of &quot;sub&quot; from the JWT as a user&#39;s unique ID. But this is not required.
-7. You must provide an unprotected endpoint  **GET /users**  that returns all the users currently registered in the app, even if they don&#39;t currently have any relationship with a non-user entity. The response does not need to be paginated.
-  - Minimally this endpoint should display the unique ID for a user. Beyond that it is your choice what else is displayed.
-8. There is no requirement for an integration at the UI level between the login page and the REST API endpoints.
-
+1. User entities stored in GCP datastore.
+2. GCP OAuth and Datastore used to create, store, and verify user accounts. Currently cannot edit or delete users.
+3. A URL is provided where a user can enter a username and password to login or create a user account.
+4. Requests for the protected resources uses a JWT for authentication. This JWT is shown to the user after login and stored in cookies. You must also show the user&#39;s unique ID after login.
+5. The choice of what to use as the user&#39;s unique ID is up to you.
+6. The unprotected endpoint **GET /users** returns all the users currently registered in the app.
 
 ### Status Codes
 
@@ -100,7 +93,7 @@ Postman Test Collection
   - Requests to protected resources are rejected if the JWT is invalid.
   - Requests to protected resources are rejected if the JWT is missing.
 6. The tests verify at least the response code.
-7. In your spec you need to specify valid values for the properties in the request body. However, your application and your tests don&#39;t need to cover input validation. You can assume that the input will be valid per your specification.
+7. The spec specifies valid values for the properties in the request body.
 8. One user can&#39;t read, edit or delete an entity created by another user:
 9. Verify the endpoints that create and remove relationships:
   - Show the resources before the relationship is created (or removed)
