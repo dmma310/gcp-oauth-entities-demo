@@ -8,6 +8,7 @@ app.use(express.urlencoded());
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
+app.disable('x-powered-by'); // disable hackers from detecting that express is used.
 
 require('dotenv').config();
 app.set('view engine', 'ejs');
