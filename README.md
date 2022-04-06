@@ -2,7 +2,7 @@
 https://www.dropbox.com/s/l85h51crkv53lem/gcp-oauth-demo.mp4?dl=0
 
 # Application URL (as of 2021)
-https://gcp-demo-dex.wl.r.appspot.com
+https://gcp-project-demo-314305.wn.r.appspot.com/login
 
 Full stack app using Node.js, Express.js, GCP (Datastore & OAuth), EJS and Bootstrap 4
 See /specs/api_spec.doc for details on entities, relationships, and how to use the API
